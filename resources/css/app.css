@@ -1,0 +1,188 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.jsx';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --bg-primary: #FEFBF6;
+    --bg-card: #1C1916;
+    --text-primary: #F5EFE4;
+    --text-muted: #8C7B6B;
+    --accent: #C05A25;
+    --gold: #D4A556;
+    --border: #D8CFC2;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Typography */
+.font-display {
+    font-family: var(--font-display);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Section base */
+.section-padding {
+    padding: 80px 48px;
+}
+
+/* Section divider */
+.section-divider {
+    border-bottom: 1px solid var(--border);
+}
+
+/* Label tag */
+.label-tag {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* Buttons */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background-color: var(--accent);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.btn-primary:hover {
+    background-color: #a84d1f;
+    border-color: #a84d1f;
+}
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background-color: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.btn-ghost:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.btn-outline-sm {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background-color: transparent;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.btn-outline-sm:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.btn-fill-sm {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background-color: var(--accent);
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+.btn-fill-sm:hover {
+    background-color: #a84d1f;
+    border-color: #a84d1f;
+}
+
+/* Cards */
+.card-dark {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+.card-dark:hover {
+    border-color: var(--accent);
+}
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 60px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-padding {
+        padding: 48px 16px;
+    }
+}

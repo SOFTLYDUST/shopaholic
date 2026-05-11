@@ -1,0 +1,177 @@
+import { Link, usePage } from '@inertiajs/react'
+
+const navLinks = [
+    { label: 'Beranda', href: '/' },
+    { label: 'Tentang Kami', href: '/tentang-kami' },
+    { label: 'Kontak', href: '/kontak' },
+]
+const logoPath = '/img/Logo%20Shopaholic%203.png'
+
+export default function MainLayout({ children }) {
+    const { url } = usePage()
+
+    const isActive = (path) => url === path
+
+    return (
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg)', color: 'var(--ink)' }}>
+            <style>{`
+                :root {
+                    --bg: #FEFBF6;
+                    --card: #FEFBF6;
+                    --border: #D8CFC2;
+                    --primary: #C05A25;
+                    --gold: #D4A556;
+                    --cream: #F5EFE4;
+                    --ink: #1C1916;
+                    --muted: #8C7B6B;
+                    --shadow-soft: 0 6px 18px rgba(28, 25, 22, 0.08);
+                    --font-heading: "Antic Didone", serif;
+                    --font-body: "Plus Jakarta Sans", sans-serif;
+                }
+                * { box-sizing: border-box; }
+                body {
+                    margin: 0;
+                    background: var(--bg);
+                    color: var(--ink);
+                    font-family: var(--font-body);
+                }
+                a { color: inherit; }
+                .container {
+                    width: min(1200px, 100%);
+                    margin: 0 auto;
+                    padding: 0 48px;
+                }
+                .section {
+                    padding: 80px 48px;
+                    border-bottom: 1px solid var(--border);
+                }
+                .label {
+                    color: var(--primary);
+                    font-size: 11px;
+                    letter-spacing: 2.5px;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                }
+                .btn {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-decoration: none;
+                    border-radius: 2px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    padding: 10px 16px;
+                    transition: all 0.2s ease;
+                    border: 1px solid transparent;
+                }
+                .btn-outline {
+                    border-color: var(--ink);
+                    color: var(--ink);
+                    background: transparent;
+                }
+                .btn-outline:hover {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                }
+                .btn-primary {
+                    background: var(--primary);
+                    border-color: var(--primary);
+                    color: var(--cream);
+                }
+                .btn-primary:hover {
+                    background: #a84e21;
+                    border-color: #a84e21;
+                }
+                .footer-grid {
+                    display: grid;
+                    gap: 24px;
+                    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                }
+                @media (max-width: 768px) {
+                    .container { padding: 0 20px; }
+                    .section { padding: 64px 20px; }
+                    .nav-center { display: none; }
+                    .nav-actions { gap: 8px; }
+                }
+            `}</style>
+
+            <nav
+                style={{
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 20,
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    background: 'rgba(254, 251, 246, 0.88)',
+                    borderBottom: '1px solid var(--border)',
+                }}
+            >
+                <div className="container" style={{ height: 74, display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 16 }}>
+                    <Link href="/" style={{ textDecoration: 'none', justifySelf: 'start', display: 'inline-flex', alignItems: 'center' }}>
+                        <img src={logoPath} alt="Shopaholic" style={{ height: 100, width: 'auto', display: 'block', transform: 'translateY(-10px)' }} />
+                    </Link>
+
+                    <div className="nav-center" style={{ display: 'flex', gap: 20, alignItems: 'center', justifySelf: 'center' }}>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                style={{
+                                    textDecoration: 'none',
+                                    fontSize: 13,
+                                    color: isActive(link.href) ? 'var(--ink)' : 'var(--muted)',
+                                    borderBottom: isActive(link.href) ? '1px solid var(--primary)' : '1px solid transparent',
+                                    paddingBottom: 6,
+                                    transition: 'all 0.2s ease',
+                                }}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
+
+                    <div className="nav-actions" style={{ justifySelf: 'end', display: 'flex', gap: 10 }}>
+                        <Link href="/masuk" className="btn btn-outline">Masuk</Link>
+                        <Link href="/daftar" className="btn btn-primary">Daftar</Link>
+                    </div>
+                </div>
+            </nav>
+
+            <main>{children}</main>
+
+            <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
+                <div className="container" style={{ paddingTop: 56, paddingBottom: 34 }}>
+                    <div className="footer-grid">
+                        <div>
+                            <img src={logoPath} alt="Shopaholic" style={{ height: 150, width: 'auto', display: 'block', marginBottom: 12, transform: 'translateY(-15px)' }} />
+                            <p style={{ margin: 0, color: 'var(--muted)', fontSize: 13, lineHeight: 1.8, maxWidth: 370 }}>
+                                Solusi belanja produk luar negeri yang mudah, aman, dan terpercaya untuk seluruh Indonesia.
+                            </p>
+                        </div>
+
+                        <div>
+                            <p style={{ margin: '0 0 14px 0', color: 'var(--ink)', fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase' }}>Tentang Kami</p>
+                            <div style={{ display: 'grid', gap: 10 }}>
+                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Tentang Shopaholic</Link>
+                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Visi &amp; Misi Shopaholic</Link>
+                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Filosofi</Link>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p style={{ margin: '0 0 14px 0', color: 'var(--ink)', fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase' }}>Quick Links</p>
+                            <div style={{ display: 'grid', gap: 10 }}>
+                                <Link href="/" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Mulai Titip</Link>
+                                <Link href="/kontak" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Hubungi Kami</Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ borderTop: '1px solid var(--border)', marginTop: 34, paddingTop: 18, color: 'var(--muted)', fontSize: 12 }}>
+                        © 2026 Shopaholic. All rights reserved.
+                    </div>
+                </div>
+            </footer>
+        </div>
+    )
+}
