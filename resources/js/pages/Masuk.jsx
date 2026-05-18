@@ -1,12 +1,29 @@
-import { Head, Link } from '@inertiajs/react'
-import { Eye, EyeOff, Lock, User } from 'lucide-react'
+import { Head, Link, useForm } from '@inertiajs/react'
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { useState } from 'react'
 
 export default function Masuk() {
     const [role, setRole] = useState('pembeli')
     const [showPassword, setShowPassword] = useState(false)
 
+    const { data, setData, post, processing, errors } = useForm({
+        email: '',
+        password: '',
+        role: 'pembeli',
+        remember: false,
+    })
+
     const isPembeli = role === 'pembeli'
+
+    const handleRoleChange = (newRole) => {
+        setRole(newRole)
+        setData('role', newRole)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        post('/masuk')
+    }
 
     return (
         <>
@@ -28,14 +45,17 @@ export default function Masuk() {
                     </p>
                 </div>
 
-                <div style={{
-                    width: 'min(550px, 100%)',
-                    margin: 'clamp(14px, 2vh, 24px) auto 0',
-                    background: '#F0EBC9',
-                    borderRadius: 22,
-                    padding: '26px 20px 22px',
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
-                }}>
+                <form
+                    onSubmit={handleSubmit}
+                    style={{
+                        width: 'min(550px, 100%)',
+                        margin: 'clamp(14px, 2vh, 24px) auto 0',
+                        background: '#F0EBC9',
+                        borderRadius: 22,
+                        padding: '26px 20px 22px',
+                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+                    }}
+                >
                     <p style={{ margin: 0, fontFamily: '"Antic Didone", serif', fontSize: 'clamp(24px, 3.6vw, 34px)', color: '#1F1A17' }}>
                         Masuk Sebagai
                     </p>
@@ -43,7 +63,7 @@ export default function Masuk() {
                     <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
                         <button
                             type="button"
-                            onClick={() => setRole('pembeli')}
+                            onClick={() => handleRoleChange('pembeli')}
                             style={{
                                 flex: 1,
                                 minWidth: 0,
@@ -62,7 +82,7 @@ export default function Masuk() {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setRole('penjual')}
+                            onClick={() => handleRoleChange('penjual')}
                             style={{
                                 flex: 1,
                                 minWidth: 0,
@@ -92,10 +112,13 @@ export default function Masuk() {
                             background: '#F4F3EE',
                             padding: '0 16px',
                         }}>
-                            <User size={18} color="#1F1A17" />
+                            <Mail size={18} color="#1F1A17" />
                             <input
-                                type="text"
-                                placeholder="Username"
+                                type="email"
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                                placeholder="Email"
+                                required
                                 style={{
                                     border: 'none',
                                     outline: 'none',
@@ -122,7 +145,10 @@ export default function Masuk() {
                             <Lock size={18} color="#1F1A17" />
                             <input
                                 type={showPassword ? 'text' : 'password'}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
                                 placeholder="Password"
+                                required
                                 style={{
                                     border: 'none',
                                     outline: 'none',
@@ -153,8 +179,21 @@ export default function Masuk() {
                         </label>
                     </div>
 
+                    {(errors.email || errors.password || errors.role) && (
+                        <p style={{
+                            margin: '12px 0 0',
+                            textAlign: 'center',
+                            color: '#A62037',
+                            fontFamily: '"Plus Jakarta Sans", sans-serif',
+                            fontSize: 14,
+                        }}>
+                            {errors.email || errors.password || errors.role}
+                        </p>
+                    )}
+
                     <button
-                        type="button"
+                        type="submit"
+                        disabled={processing}
                         style={{
                             display: 'block',
                             margin: '20px auto 0',
@@ -162,16 +201,17 @@ export default function Masuk() {
                             height: 44,
                             border: 'none',
                             borderRadius: 12,
-                            background: '#A62037',
+                            background: processing ? '#8a1a2c' : '#A62037',
                             color: '#F7F2DE',
                             fontFamily: '"Antic Didone", serif',
                             fontSize: 'clamp(18px, 3.4vw, 28px)',
                             lineHeight: 1,
                             whiteSpace: 'nowrap',
-                            cursor: 'pointer',
+                            cursor: processing ? 'not-allowed' : 'pointer',
+                            opacity: processing ? 0.8 : 1,
                         }}
                     >
-                        Masuk Sekarang
+                        {processing ? 'Memproses...' : 'Masuk Sekarang'}
                     </button>
 
                     <p style={{
@@ -186,7 +226,7 @@ export default function Masuk() {
                             Daftar Sekarang
                         </Link>
                     </p>
-                </div>
+                </form>
             </div>
         </>
     )

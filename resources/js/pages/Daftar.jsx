@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 
@@ -7,7 +7,26 @@ export default function Daftar() {
     const [showPassword, setShowPassword] = useState(false)
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
 
+    const { data, setData, post, processing, errors } = useForm({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        password_confirmation: '',
+        role: 'pembeli',
+    })
+
     const isPembeli = role === 'pembeli'
+
+    const handleRoleChange = (newRole) => {
+        setRole(newRole)
+        setData('role', newRole)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        post('/daftar')
+    }
 
     return (
         <>
@@ -46,7 +65,8 @@ export default function Daftar() {
                     </p>
                 </div>
 
-                <div
+                <form
+                    onSubmit={handleSubmit}
                     style={{
                         width: 'min(980px, 100%)',
                         margin: 'clamp(10px, 1.8vh, 18px) auto 0',
@@ -70,7 +90,7 @@ export default function Daftar() {
                     <div style={{ display: 'flex', gap: 12, marginTop: 8, maxWidth: 420 }}>
                         <button
                             type="button"
-                            onClick={() => setRole('pembeli')}
+                            onClick={() => handleRoleChange('pembeli')}
                             style={{
                                 width: 140,
                                 height: 34,
@@ -88,7 +108,7 @@ export default function Daftar() {
                         </button>
                         <button
                             type="button"
-                            onClick={() => setRole('penjual')}
+                            onClick={() => handleRoleChange('penjual')}
                             style={{
                                 width: 140,
                                 height: 34,
@@ -115,31 +135,59 @@ export default function Daftar() {
                             rowGap: 8,
                         }}
                     >
-                        <Field label="Username" placeholder="Minimal 4 karakter" />
-                        <Field label="Email" type="email" placeholder="email@example.com" />
-                        <Field label="Nama Lengkap" placeholder="Masukkan nama lengkap" />
-                        <Field label="No Telepon" placeholder="Contoh: 081399542183" />
-
+                        <Field
+                            label="Email"
+                            type="email"
+                            placeholder="email@gmail.com"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            error={errors.email}
+                            required
+                        />
+                        <Field
+                            label="Nama Lengkap"
+                            placeholder="Masukkan nama lengkap"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            error={errors.name}
+                            required
+                        />
+                        <Field
+                            label="No Telepon"
+                            placeholder="Contoh: 081399542183"
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            error={errors.phone}
+                        />
                         <Field
                             label="Password"
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Minimal 8 Karakter"
+                            value={data.password}
+                            onChange={(e) => setData('password', e.target.value)}
+                            error={errors.password}
                             hasToggle
                             onToggle={() => setShowPassword((prev) => !prev)}
                             isVisible={showPassword}
+                            required
                         />
                         <Field
                             label="Konfirmasi Password"
                             type={showPasswordConfirmation ? 'text' : 'password'}
                             placeholder="Ulangi password"
+                            value={data.password_confirmation}
+                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            error={errors.password_confirmation}
                             hasToggle
                             onToggle={() => setShowPasswordConfirmation((prev) => !prev)}
                             isVisible={showPasswordConfirmation}
+                            required
                         />
                     </div>
 
                     <button
-                        type="button"
+                        type="submit"
+                        disabled={processing}
                         style={{
                             display: 'block',
                             margin: '16px auto 0',
@@ -147,16 +195,17 @@ export default function Daftar() {
                             height: 40,
                             border: 'none',
                             borderRadius: 14,
-                            background: '#A62037',
+                            background: processing ? '#8a1a2c' : '#A62037',
                             color: '#F7F2DE',
                             fontFamily: '"Antic Didone", serif',
                             fontSize: 'clamp(16px, 2vw, 24px)',
                             lineHeight: 1,
                             whiteSpace: 'nowrap',
-                            cursor: 'pointer',
+                            cursor: processing ? 'not-allowed' : 'pointer',
+                            opacity: processing ? 0.8 : 1,
                         }}
                     >
-                        Daftar Sekarang
+                        {processing ? 'Memproses...' : 'Daftar Sekarang'}
                     </button>
 
                     <p
@@ -173,13 +222,13 @@ export default function Daftar() {
                             Masuk Disini
                         </Link>
                     </p>
-                </div>
+                </form>
             </div>
         </>
     )
 }
 
-function Field({ label, type = 'text', placeholder, hasToggle = false, onToggle, isVisible = false }) {
+function Field({ label, type = 'text', placeholder, value, onChange, error, hasToggle = false, onToggle, isVisible = false, required = false }) {
     return (
         <label style={{ display: 'grid', gap: 4 }}>
             <span
@@ -198,7 +247,7 @@ function Field({ label, type = 'text', placeholder, hasToggle = false, onToggle,
                     gap: 10,
                     height: 44,
                     borderRadius: 12,
-                    border: '1px solid #8C4B36',
+                    border: `1px solid ${error ? '#A62037' : '#8C4B36'}`,
                     background: '#F4F3EE',
                     padding: '0 14px',
                 }}
@@ -206,6 +255,9 @@ function Field({ label, type = 'text', placeholder, hasToggle = false, onToggle,
                 <input
                     type={type}
                     placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    required={required}
                     style={{
                         border: 'none',
                         outline: 'none',
@@ -236,6 +288,11 @@ function Field({ label, type = 'text', placeholder, hasToggle = false, onToggle,
                     </button>
                 )}
             </span>
+            {error && (
+                <span style={{ color: '#A62037', fontSize: 12, fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
+                    {error}
+                </span>
+            )}
         </label>
     )
 }
