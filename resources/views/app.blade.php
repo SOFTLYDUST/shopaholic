@@ -17,5 +17,11 @@
     </head>
     <body>
         @inertia
+        <noscript>
+            <div style="max-width:480px;margin:48px auto;padding:24px;font-family:system-ui,sans-serif;text-align:center;">
+                <p style="font-weight:600;">JavaScript diperlukan untuk menjalankan Shopaholic.</p>
+                <p style="margin-top:12px;"><a href="/masuk" style="color:#C05A25;">Buka halaman Masuk</a></p>
+            </div>
+        </noscript>
     </body>
 </html>

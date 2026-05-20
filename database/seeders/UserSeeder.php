@@ -9,13 +9,9 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        User::query()->where('email', 'admin@gmail.com')->delete();
+
         $users = [
-            [
-                'name' => 'Admin Shopaholic',
-                'email' => 'admin@gmail.com',
-                'password' => 'password',
-                'role' => 'admin',
-            ],
             [
                 'name' => 'Penjual Shopaholic',
                 'email' => 'penjual@gmail.com',

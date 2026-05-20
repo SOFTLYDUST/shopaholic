@@ -1,9 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react'
 import { Plus, ShoppingBag, ShoppingCart, Trash2 } from 'lucide-react'
-import PembeliBottomNav from '../../components/pembeli/PembeliBottomNav'
-import PembeliHeader from '../../components/pembeli/PembeliHeader'
-
-const cardGradient = 'linear-gradient(180deg, #D4DCE8 0%, #F4F3EE 100%)'
+import PembeliCard from '../../components/pembeli/PembeliCard'
+import PembeliLayout from '../../layouts/PembeliLayout'
 
 export default function KeranjangBelanja({ items = [], subtotal_formatted = 'Rp. 0' }) {
     const increment = (id) => router.patch(`/pembeli/keranjang/${id}`, {}, { preserveScroll: true })
@@ -11,129 +9,160 @@ export default function KeranjangBelanja({ items = [], subtotal_formatted = 'Rp.
 
     return (
         <>
-            <Head title="Keranjang Belanja" />
-            <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
-                <PembeliHeader title="Keranjang Belanja" variant="keranjang" />
-                <main style={{ flex: 1, background: '#F0EBC9', padding: 'clamp(16px, 2.5vw, 28px)', overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
-                        <Link href="/pembeli/belanja" style={{
-                            display: 'inline-flex', alignItems: 'center', gap: 8,
-                            padding: '10px 18px', borderRadius: 12, background: '#E8A4B8',
-                            color: '#A62037', fontFamily: '"Antic Didone", serif', fontSize: 16,
-                            textDecoration: 'none', border: '1px solid #8C4B36',
+            <Head title="Keranjang" />
+            <PembeliLayout
+                label="Pesanan Anda"
+                title="Keranjang Belanja"
+                description="Review produk yang akan dititipkan sebelum melanjutkan ke pembayaran."
+                headerAction={items.length > 0 ? (
+                    <Link href="/pembeli/belanja" className="pembeli-btn pembeli-btn-outline">
+                        <ShoppingBag size={16} />
+                        Lanjut Belanja
+                    </Link>
+                ) : null}
+            >
+                {items.length === 0 ? (
+                    <PembeliCard style={{ textAlign: 'center', padding: 56 }}>
+                        <ShoppingCart size={40} color="var(--muted)" strokeWidth={1.2} style={{ margin: '0 auto 16px' }} />
+                        <h2 style={{
+                            margin: '0 0 8px',
+                            fontFamily: 'var(--font-heading)',
+                            fontSize: 26,
+                            fontWeight: 600,
                         }}>
-                            <ShoppingBag size={18} />
-                            Belanja Lagi
+                            Keranjang masih kosong
+                        </h2>
+                        <p style={{ margin: '0 0 24px', color: 'var(--muted)', fontSize: 14 }}>
+                            Mulai pilih produk dari katalog titip kami.
+                        </p>
+                        <Link href="/pembeli/belanja" className="pembeli-btn pembeli-btn-primary">
+                            Mulai Belanja
                         </Link>
-                    </div>
-
-                    {items.length === 0 ? (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 40 }}>
-                            <ShoppingCart size={48} color="#8C7B6B" strokeWidth={1.2} />
-                            <p style={{ margin: 0, fontFamily: '"Antic Didone", serif', fontSize: 22, color: '#8C7B6B' }}>Keranjang masih kosong</p>
-                            <Link href="/pembeli/belanja" style={{
-                                padding: '12px 24px', borderRadius: 12, background: '#A62037', color: '#F7F2DE',
-                                fontFamily: '"Antic Didone", serif', fontSize: 18, textDecoration: 'none',
-                            }}>Mulai Belanja</Link>
-                        </div>
-                    ) : (
-                        <>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-                                {items.map((item, index) => (
-                                    <div key={item.id}>
+                    </PembeliCard>
+                ) : (
+                    <div className="keranjang-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(260px, 320px)', gap: 28, alignItems: 'start' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                            {items.map((item) => (
+                                <PembeliCard key={item.id} style={{ padding: 0, overflow: 'hidden' }}>
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: '120px minmax(0, 1fr) auto',
+                                        gap: 0,
+                                        alignItems: 'stretch',
+                                    }}>
                                         <div style={{
-                                            display: 'grid',
-                                            gridTemplateColumns: 'minmax(100px, 140px) 1fr auto',
-                                            gap: 16,
+                                            background: 'var(--cream)',
+                                            padding: 12,
+                                            display: 'flex',
                                             alignItems: 'center',
-                                            padding: '16px 0',
+                                            justifyContent: 'center',
+                                            borderRight: '1px solid var(--border)',
                                         }}>
-                                            <div style={{
-                                                background: cardGradient, borderRadius: 16, padding: 12,
-                                                aspectRatio: '1', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                border: '1px solid rgba(140, 75, 54, 0.25)',
-                                            }}>
-                                                <img src={item.product.image} alt={item.product.name} style={{ width: '90%', height: '90%', objectFit: 'contain' }} />
-                                            </div>
-                                            <div style={{
-                                                background: cardGradient, borderRadius: 16, padding: '14px 20px',
-                                                border: '1px solid rgba(140, 75, 54, 0.25)', minWidth: 0,
-                                            }}>
-                                                <p style={{ margin: 0, fontFamily: '"Antic Didone", serif', fontSize: 'clamp(16px, 2vw, 22px)', color: '#CF611D', borderBottom: '2px solid #A62037', paddingBottom: 8 }}>
-                                                    {item.product.name}
-                                                </p>
-                                                <p style={{ margin: '10px 0 0', fontFamily: '"Antic Didone", serif', fontSize: 'clamp(15px, 1.8vw, 20px)', color: '#CF611D' }}>
-                                                    {item.product.price_formatted}
-                                                    {item.quantity > 1 && (
-                                                        <span style={{ fontSize: 14, color: '#8C7B6B' }}> × {item.quantity}</span>
-                                                    )}
-                                                </p>
-                                            </div>
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'center' }}>
-                                                <button type="button" onClick={() => increment(item.id)} aria-label="Tambah jumlah" style={actionBtnStyle}>
-                                                    <Plus size={22} color="#3B6FD9" strokeWidth={2.5} />
-                                                </button>
-                                                <button type="button" onClick={() => remove(item.id)} aria-label="Hapus" style={actionBtnStyle}>
-                                                    <Trash2 size={22} color="#3B6FD9" strokeWidth={1.8} />
-                                                </button>
-                                            </div>
+                                            <img
+                                                src={item.product.image}
+                                                alt={item.product.name}
+                                                style={{ width: '100%', height: 96, objectFit: 'contain' }}
+                                            />
                                         </div>
-                                        {index < items.length - 1 && (
-                                            <hr style={{ border: 'none', borderTop: '1px solid rgba(140, 75, 54, 0.3)', margin: 0 }} />
-                                        )}
+                                        <div style={{ padding: '16px 20px', minWidth: 0 }}>
+                                            <p className="pembeli-label" style={{ marginBottom: 6 }}>Produk Titip</p>
+                                            <h3 style={{
+                                                margin: 0,
+                                                fontFamily: 'var(--font-heading)',
+                                                fontSize: 20,
+                                                fontWeight: 600,
+                                                lineHeight: 1.3,
+                                            }}>
+                                                {item.product.name}
+                                            </h3>
+                                            <p style={{ margin: '8px 0 0', fontSize: 13, color: 'var(--muted)' }}>
+                                                {item.product.price_formatted}
+                                                {item.quantity > 1 && ` × ${item.quantity}`}
+                                            </p>
+                                            <p style={{
+                                                margin: '10px 0 0',
+                                                fontFamily: 'var(--font-heading)',
+                                                fontSize: 18,
+                                                color: 'var(--primary)',
+                                            }}>
+                                                {item.product.line_total_formatted}
+                                            </p>
+                                        </div>
+                                        <div style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent: 'center',
+                                            gap: 8,
+                                            padding: '12px 16px',
+                                            borderLeft: '1px solid var(--border)',
+                                        }}>
+                                            <button
+                                                type="button"
+                                                onClick={() => increment(item.id)}
+                                                className="pembeli-btn pembeli-btn-ghost"
+                                                style={{ padding: 8 }}
+                                                aria-label="Tambah jumlah"
+                                            >
+                                                <Plus size={18} color="var(--primary)" />
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => remove(item.id)}
+                                                className="pembeli-btn pembeli-btn-ghost"
+                                                style={{ padding: 8 }}
+                                                aria-label="Hapus"
+                                            >
+                                                <Trash2 size={18} color="var(--muted)" />
+                                            </button>
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
+                                </PembeliCard>
+                            ))}
+                        </div>
 
-                            <div style={{
-                                marginTop: 'auto', paddingTop: 24,
-                                display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+                        <PembeliCard accent style={{ position: 'sticky', top: 90 }}>
+                            <p className="pembeli-label">Ringkasan</p>
+                            <h3 style={{
+                                margin: '8px 0 20px',
+                                fontFamily: 'var(--font-heading)',
+                                fontSize: 22,
+                                fontWeight: 600,
                             }}>
-                                <div style={{
-                                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                                    padding: '12px 20px', borderRadius: 12, background: cardGradient,
-                                    border: '1px solid rgba(140, 75, 54, 0.25)',
-                                    fontFamily: '"Antic Didone", serif', fontSize: 20, color: '#1F1A17',
-                                }}>
-                                    <Plus size={20} color="#3B6FD9" />
-                                    Subtotal
-                                </div>
-                                <div style={{
-                                    padding: '12px 24px', borderRadius: 12, background: '#F4F3EE',
-                                    border: '1px solid #8C4B36',
-                                    fontFamily: '"Antic Didone", serif', fontSize: 'clamp(18px, 2.2vw, 24px)', color: '#CF611D',
+                                Total Sementara
+                            </h3>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                marginBottom: 24,
+                                paddingBottom: 20,
+                                borderBottom: '1px solid var(--border)',
+                            }}>
+                                <span style={{ fontSize: 14, color: 'var(--muted)' }}>Subtotal</span>
+                                <span style={{
+                                    fontFamily: 'var(--font-heading)',
+                                    fontSize: 22,
+                                    color: 'var(--primary)',
                                 }}>
                                     {subtotal_formatted}
-                                </div>
+                                </span>
                             </div>
+                            <p style={{ margin: '0 0 20px', fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>
+                                Ongkir internasional & domestik dihitung pada halaman pembayaran.
+                            </p>
+                            <Link href="/pembeli/checkout" className="pembeli-btn pembeli-btn-primary" style={{ width: '100%' }}>
+                                <ShoppingCart size={18} />
+                                Lanjut Checkout
+                            </Link>
+                        </PembeliCard>
+                    </div>
+                )}
 
-                            <button type="button" style={{
-                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                                width: '100%', maxWidth: 420, margin: '20px auto 0',
-                                padding: '14px 24px', borderRadius: 16,
-                                background: 'linear-gradient(180deg, #F4F3EE 0%, #E8E4F5 100%)',
-                                border: '1px solid #8C4B36',
-                                fontFamily: '"Antic Didone", serif', fontSize: 'clamp(18px, 2.5vw, 24px)',
-                                color: '#1F1A17', cursor: 'pointer',
-                            }}>
-                                <ShoppingCart size={22} />
-                                Chekout
-                            </button>
-                        </>
-                    )}
-                </main>
-                <PembeliBottomNav active="home" />
-            </div>
+                <style>{`
+                    @media (max-width: 768px) {
+                        .keranjang-grid { grid-template-columns: 1fr !important; }
+                    }
+                `}</style>
+            </PembeliLayout>
         </>
     )
-}
-
-const actionBtnStyle = {
-    border: 'none',
-    background: 'transparent',
-    cursor: 'pointer',
-    padding: 4,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
 }

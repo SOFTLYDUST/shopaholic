@@ -17,6 +17,15 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureRole::class,
         ]);
+        $middleware->redirectGuestsTo('/masuk');
+        $middleware->redirectUsersTo(function (\Illuminate\Http\Request $request) {
+            $role = $request->user()?->role;
+
+            return match ($role) {
+                'pembeli' => route('pembeli.belanja'),
+                default => route('beranda'),
+            };
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

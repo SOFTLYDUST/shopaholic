@@ -42,22 +42,20 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if ($user->role !== 'admin') {
-            if (empty($validated['role'])) {
-                Auth::logout();
+        if (empty($validated['role'])) {
+            Auth::logout();
 
-                throw ValidationException::withMessages([
-                    'role' => 'Pilih peran pembeli atau penjual.',
-                ]);
-            }
+            throw ValidationException::withMessages([
+                'role' => 'Pilih peran pembeli atau penjual.',
+            ]);
+        }
 
-            if ($user->role !== $validated['role']) {
-                Auth::logout();
+        if ($user->role !== $validated['role']) {
+            Auth::logout();
 
-                throw ValidationException::withMessages([
-                    'email' => 'Akun ini tidak terdaftar sebagai '.($validated['role'] === 'pembeli' ? 'pembeli' : 'penjual').'.',
-                ]);
-            }
+            throw ValidationException::withMessages([
+                'email' => 'Akun ini tidak terdaftar sebagai '.($validated['role'] === 'pembeli' ? 'pembeli' : 'penjual').'.',
+            ]);
         }
 
         $request->session()->regenerate();

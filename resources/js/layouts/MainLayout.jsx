@@ -8,9 +8,15 @@ const navLinks = [
 const logoPath = '/img/Logo%20Shopaholic%203.png'
 
 export default function MainLayout({ children }) {
-    const { url } = usePage()
+    const page = usePage()
+    const { auth } = page.props
+    const currentUrl = typeof page.url === 'string' ? page.url : ''
+    const user = auth?.user
 
-    const isActive = (path) => url === path
+    const isActive = (path) => {
+        if (!path || !currentUrl) return false
+        return currentUrl === path || currentUrl.startsWith(`${path}/`)
+    }
 
     return (
         <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg)', color: 'var(--ink)' }}>
@@ -87,6 +93,15 @@ export default function MainLayout({ children }) {
                     gap: 24px;
                     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
                 }
+                .nav-logo img {
+                    height: 56px;
+                    width: auto;
+                    display: block;
+                }
+                .nav-actions {
+                    position: relative;
+                    z-index: 10;
+                }
                 @media (max-width: 768px) {
                     .container { padding: 0 20px; }
                     .section { padding: 64px 20px; }
@@ -106,9 +121,9 @@ export default function MainLayout({ children }) {
                     borderBottom: '1px solid var(--border)',
                 }}
             >
-                <div className="container" style={{ height: 74, display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 16 }}>
-                    <Link href="/" style={{ textDecoration: 'none', justifySelf: 'start', display: 'inline-flex', alignItems: 'center' }}>
-                        <img src={logoPath} alt="Shopaholic" style={{ height: 100, width: 'auto', display: 'block', transform: 'translateY(-10px)' }} />
+                <div className="container" style={{ minHeight: 72, display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', gap: 16 }}>
+                    <Link href="/" className="nav-logo" style={{ textDecoration: 'none', justifySelf: 'start', display: 'inline-flex', alignItems: 'center', flexShrink: 0 }}>
+                        <img src={logoPath} alt="Shopaholic" />
                     </Link>
 
                     <div className="nav-center" style={{ display: 'flex', gap: 20, alignItems: 'center', justifySelf: 'center' }}>
@@ -130,9 +145,20 @@ export default function MainLayout({ children }) {
                         ))}
                     </div>
 
-                    <div className="nav-actions" style={{ justifySelf: 'end', display: 'flex', gap: 10 }}>
-                        <Link href="/masuk" className="btn btn-outline">Masuk</Link>
-                        <Link href="/daftar" className="btn btn-primary">Daftar</Link>
+                    <div className="nav-actions" style={{ justifySelf: 'end', display: 'flex', gap: 10, flexShrink: 0 }}>
+                        {user ? (
+                            <Link
+                                href={user.role === 'pembeli' ? '/pembeli/belanja' : '/'}
+                                className="btn btn-primary"
+                            >
+                                {user.role === 'pembeli' ? 'Ke Belanja' : 'Dashboard'}
+                            </Link>
+                        ) : (
+                            <>
+                                <a href="/masuk" className="btn btn-outline" data-inertia-link="false">Masuk</a>
+                                <a href="/daftar" className="btn btn-primary" data-inertia-link="false">Daftar</a>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

@@ -33,8 +33,8 @@ class BelanjaController extends Controller
             ->pluck('category');
 
         return Inertia::render('pembeli/HalamanBelanja', [
-            'products' => $products,
-            'categories' => $categories,
+            'products' => $products->values()->all(),
+            'categories' => $categories->values()->all(),
         ]);
     }
 }

@@ -34,7 +34,7 @@ html {
 
 body {
     background-color: var(--bg-primary);
-    color: var(--text-primary);
+    color: #1C1916;
     font-family: var(--font-body);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;

@@ -1,14 +1,8 @@
 import { Head, router } from '@inertiajs/react'
-import {
-    ChevronDown,
-    ChevronLeft,
-    ChevronRight,
-    Search,
-    ShoppingBag,
-} from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, Search, SlidersHorizontal } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import PembeliBottomNav from '../../components/pembeli/PembeliBottomNav'
-import PembeliHeader from '../../components/pembeli/PembeliHeader'
+import ProductCard from '../../components/pembeli/ProductCard'
+import PembeliLayout from '../../layouts/PembeliLayout'
 
 const PER_PAGE = 8
 
@@ -26,6 +20,7 @@ export default function HalamanBelanja({ products = [], categories = [] }) {
     const [sortOpen, setSortOpen] = useState(false)
     const [sortBy, setSortBy] = useState('name')
     const [page, setPage] = useState(1)
+    const [showFilters, setShowFilters] = useState(false)
 
     const filtered = useMemo(() => {
         let list = [...products]
@@ -86,186 +81,283 @@ export default function HalamanBelanja({ products = [], categories = [] }) {
 
     return (
         <>
-            <Head title="Halaman Belanja" />
-            <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
-                <PembeliHeader title="Halaman Belanja" icon={ShoppingBag} />
-                <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-                    <aside style={{
-                        width: 'clamp(200px, 22vw, 280px)',
-                        flexShrink: 0,
-                        background: 'linear-gradient(180deg, #F5EFE4 0%, #E8E4F5 100%)',
-                        borderRight: '1px solid #D8CFC2',
-                        padding: '20px 0',
+            <Head title="Belanja" />
+            <PembeliLayout
+                label="Katalog Titip"
+                title={<>Belanja Produk <em style={{ color: 'var(--primary)', fontStyle: 'italic' }}>Luar Negeri</em></>}
+                description="Pilih produk yang ingin dititipkan. Kami bantu beli dari luar negeri dan kirim aman ke alamat Anda di Indonesia."
+            >
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 24, alignItems: 'center' }}>
+                    <div style={{
+                        flex: '1 1 260px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        border: '1px solid var(--border)',
+                        borderRadius: 2,
+                        padding: '0 14px',
+                        height: 44,
+                        background: 'var(--card)',
                     }}>
-                        <div style={{
-                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                            padding: '0 20px 12px', fontFamily: '"Antic Didone", serif',
-                            fontSize: 20, color: '#A62037', fontWeight: 600,
-                        }}>
-                            <span>FILTER</span>
-                            <ChevronRight size={18} />
-                        </div>
-                        {filterItems.map((item) => (
-                            <button
-                                key={item.key}
-                                type="button"
-                                onClick={() => handleFilterClick(item.key)}
-                                style={{
-                                    width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                    padding: '14px 20px', border: 'none', borderBottom: '1px solid rgba(140, 75, 54, 0.2)',
-                                    background: activeFilter === item.key || (item.key === 'category' && selectedCategory) ? 'rgba(207, 97, 29, 0.15)' : 'transparent',
-                                    fontFamily: '"Antic Didone", serif', fontSize: 17, color: '#1F1A17',
-                                    cursor: 'pointer', textAlign: 'left',
-                                }}
-                            >
-                                <span>{item.label}</span>
-                                <ChevronRight size={16} color="#8C4B36" />
-                            </button>
-                        ))}
-                        {activeFilter === 'category' && (
-                            <div style={{ padding: '8px 12px 0' }}>
-                                <button type="button" onClick={() => { setSelectedCategory(''); setPage(1) }} style={{
-                                    display: 'block', width: '100%', marginBottom: 6, padding: '8px 12px', borderRadius: 8,
-                                    border: '1px solid #8C4B36', background: !selectedCategory ? '#CF611D' : '#F4F3EE',
-                                    color: !selectedCategory ? '#F8F2E8' : '#1F1A17', fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 13, cursor: 'pointer',
-                                }}>Semua</button>
-                                {categories.map((cat) => (
-                                    <button key={cat} type="button" onClick={() => { setSelectedCategory(cat); setPage(1) }} style={{
-                                        display: 'block', width: '100%', marginBottom: 6, padding: '8px 12px', borderRadius: 8,
-                                        border: '1px solid #8C4B36', background: selectedCategory === cat ? '#CF611D' : '#F4F3EE',
-                                        color: selectedCategory === cat ? '#F8F2E8' : '#1F1A17', fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 13, cursor: 'pointer',
-                                    }}>{cat}</button>
+                        <Search size={18} color="var(--muted)" />
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => { setSearch(e.target.value); setPage(1) }}
+                            placeholder="Cari nama atau kategori produk..."
+                            style={{
+                                flex: 1,
+                                border: 'none',
+                                outline: 'none',
+                                background: 'transparent',
+                                fontFamily: 'var(--font-body)',
+                                fontSize: 14,
+                                color: 'var(--ink)',
+                            }}
+                        />
+                    </div>
+
+                    <button
+                        type="button"
+                        className="pembeli-btn pembeli-btn-ghost"
+                        onClick={() => setShowFilters((o) => !o)}
+                        style={{ display: 'inline-flex' }}
+                    >
+                        <SlidersHorizontal size={16} />
+                        Filter
+                    </button>
+
+                    <div style={{ position: 'relative' }}>
+                        <button
+                            type="button"
+                            className="pembeli-btn pembeli-btn-outline"
+                            onClick={() => setSortOpen((o) => !o)}
+                        >
+                            Urutkan <ChevronDown size={14} />
+                        </button>
+                        {sortOpen && (
+                            <div className="pembeli-card" style={{
+                                position: 'absolute',
+                                top: '100%',
+                                right: 0,
+                                marginTop: 6,
+                                zIndex: 20,
+                                minWidth: 200,
+                                padding: 8,
+                            }}>
+                                {[
+                                    { key: 'name', label: 'Nama A-Z' },
+                                    { key: 'price_asc', label: 'Harga Terendah' },
+                                    { key: 'price_desc', label: 'Harga Tertinggi' },
+                                ].map((opt) => (
+                                    <button
+                                        key={opt.key}
+                                        type="button"
+                                        onClick={() => { setSortBy(opt.key); setActiveFilter(null); setSortOpen(false); setPage(1) }}
+                                        style={{
+                                            display: 'block',
+                                            width: '100%',
+                                            padding: '10px 12px',
+                                            border: 'none',
+                                            borderRadius: 2,
+                                            background: sortBy === opt.key ? 'var(--cream)' : 'transparent',
+                                            textAlign: 'left',
+                                            fontSize: 13,
+                                            color: sortBy === opt.key ? 'var(--primary)' : 'var(--ink)',
+                                            cursor: 'pointer',
+                                            fontFamily: 'var(--font-body)',
+                                        }}
+                                    >
+                                        {opt.label}
+                                    </button>
                                 ))}
                             </div>
                         )}
-                    </aside>
-                    <main style={{ flex: 1, background: '#F0EBC9', padding: 'clamp(16px, 2.5vw, 28px)', overflow: 'auto' }}>
-                        <div style={{
-                            display: 'flex', alignItems: 'center', gap: 12,
-                            background: '#D4DCE8', borderRadius: 16, padding: '0 16px', height: 48, maxWidth: 900,
-                        }}>
-                            <Search size={20} color="#5C6B7A" />
-                            <input
-                                type="search"
-                                value={search}
-                                onChange={(e) => { setSearch(e.target.value); setPage(1) }}
-                                placeholder="Cari Produk..."
-                                style={{
-                                    flex: 1, border: 'none', outline: 'none', background: 'transparent',
-                                    fontFamily: '"Antic Didone", serif', fontSize: 18, color: '#1F1A17',
-                                }}
-                            />
-                        </div>
+                    </div>
+                </div>
 
-                        <div style={{ marginTop: 14, position: 'relative', display: 'inline-block' }}>
-                            <button type="button" onClick={() => setSortOpen((o) => !o)} style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px',
-                                borderRadius: 10, border: '1px solid #8C4B36', background: '#F4F3EE',
-                                fontFamily: '"Antic Didone", serif', fontSize: 16, color: '#1F1A17', cursor: 'pointer',
-                            }}>
-                                Urutkan <ChevronDown size={16} />
-                            </button>
-                            {sortOpen && (
-                                <div style={{
-                                    position: 'absolute', top: '100%', left: 0, marginTop: 4, zIndex: 10,
-                                    background: '#FEFBF6', border: '1px solid #8C4B36', borderRadius: 10, minWidth: 180,
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                }}>
-                                    {[
-                                        { key: 'name', label: 'Nama A-Z' },
-                                        { key: 'price_asc', label: 'Harga Terendah' },
-                                        { key: 'price_desc', label: 'Harga Tertinggi' },
-                                    ].map((opt) => (
-                                        <button key={opt.key} type="button" onClick={() => { setSortBy(opt.key); setActiveFilter(null); setSortOpen(false); setPage(1) }} style={{
-                                            display: 'block', width: '100%', padding: '10px 14px', border: 'none', background: sortBy === opt.key ? '#F5E6D8' : 'transparent',
-                                            textAlign: 'left', fontFamily: '"Plus Jakarta Sans", sans-serif', fontSize: 14, cursor: 'pointer',
-                                        }}>{opt.label}</button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                <div className="belanja-layout" style={{
+                    display: 'grid',
+                    gridTemplateColumns: '240px 1fr',
+                    gap: 28,
+                    alignItems: 'start',
+                }}>
+                    <FilterSidebar
+                        visible={showFilters}
+                        filterItems={filterItems}
+                        activeFilter={activeFilter}
+                        selectedCategory={selectedCategory}
+                        categories={categories}
+                        onFilterClick={handleFilterClick}
+                        onCategorySelect={(cat) => { setSelectedCategory(cat); setPage(1) }}
+                        onClearCategory={() => { setSelectedCategory(''); setPage(1) }}
+                    />
 
+                    <div>
                         <div style={{
-                            marginTop: 20,
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
                             gap: 20,
                         }}>
                             {paginated.map((product) => (
-                                <article key={product.id} style={{
-                                    background: '#E8E4F5', borderRadius: 16, padding: 16,
-                                    display: 'flex', flexDirection: 'column', alignItems: 'center',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-                                }}>
-                                    <div style={{
-                                        width: '100%', aspectRatio: '1', borderRadius: 12, overflow: 'hidden',
-                                        background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    }}>
-                                        <img src={product.image} alt={product.name} style={{ width: '85%', height: '85%', objectFit: 'contain' }} />
-                                    </div>
-                                    <h3 style={{
-                                        margin: '12px 0 4px', fontFamily: '"Antic Didone", serif',
-                                        fontSize: 'clamp(16px, 2vw, 20px)', color: '#CF611D', textAlign: 'center',
-                                    }}>{product.name}</h3>
-                                    <p style={{ margin: 0, fontFamily: '"Antic Didone", serif', fontSize: 16, color: '#CF611D' }}>{product.price_formatted}</p>
-                                    <button type="button" onClick={() => addToCart(product.id)} style={{
-                                        marginTop: 12, width: '100%', padding: '10px 8px', borderRadius: 12,
-                                        border: 'none', background: '#E8A4B8', color: '#A62037',
-                                        fontFamily: '"Antic Didone", serif', fontSize: 'clamp(12px, 1.5vw, 15px)',
-                                        cursor: 'pointer', lineHeight: 1.2,
-                                    }}>Tambah ke Keranjang</button>
-                                </article>
+                                <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
                             ))}
                         </div>
 
                         {paginated.length === 0 && (
-                            <p style={{ marginTop: 24, textAlign: 'center', color: '#8C7B6B', fontFamily: '"Plus Jakarta Sans", sans-serif' }}>
-                                Produk tidak ditemukan.
-                            </p>
+                            <div className="pembeli-card" style={{ textAlign: 'center', padding: 48 }}>
+                                <p style={{ margin: 0, color: 'var(--muted)', fontSize: 14 }}>
+                                    Produk tidak ditemukan. Coba ubah kata kunci atau filter.
+                                </p>
+                            </div>
                         )}
 
-                        <nav style={{
-                            marginTop: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap',
-                        }}>
-                            <button type="button" disabled={currentPage <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} style={paginationBtnStyle(currentPage <= 1)}>
-                                <ChevronLeft size={14} /> PREV
-                            </button>
-                            {pageNumbers.map((num, i) => (
-                                typeof num === 'number' ? (
-                                    <button key={num} type="button" onClick={() => setPage(num)} style={{
-                                        ...paginationBtnStyle(false),
-                                        background: currentPage === num ? '#E8A4B8' : '#F4F3EE',
-                                        fontWeight: currentPage === num ? 700 : 400,
-                                    }}>{num}</button>
-                                ) : (
-                                    <span key={`ellipsis-${i}`} style={{ padding: '0 4px', color: '#8C7B6B' }}>...</span>
-                                )
-                            ))}
-                            <button type="button" disabled={currentPage >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} style={paginationBtnStyle(currentPage >= totalPages)}>
-                                Next <ChevronRight size={14} />
-                            </button>
-                        </nav>
-                    </main>
+                        {paginated.length > 0 && (
+                            <nav style={{
+                                marginTop: 32,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: 8,
+                                flexWrap: 'wrap',
+                            }}>
+                                <PaginationBtn disabled={currentPage <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+                                    <ChevronLeft size={14} /> Sebelumnya
+                                </PaginationBtn>
+                                {pageNumbers.map((num, i) => (
+                                    typeof num === 'number' ? (
+                                        <PaginationBtn key={num} active={currentPage === num} onClick={() => setPage(num)}>
+                                            {num}
+                                        </PaginationBtn>
+                                    ) : (
+                                        <span key={`ellipsis-${i}`} style={{ padding: '0 4px', color: 'var(--muted)' }}>…</span>
+                                    )
+                                ))}
+                                <PaginationBtn disabled={currentPage >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>
+                                    Selanjutnya <ChevronRight size={14} />
+                                </PaginationBtn>
+                            </nav>
+                        )}
+                    </div>
                 </div>
-                <PembeliBottomNav active="home" />
-            </div>
+
+                <style>{`
+                    @media (max-width: 900px) {
+                        .belanja-layout { grid-template-columns: 1fr !important; }
+                        .filter-sidebar { display: none; }
+                        .filter-sidebar.is-open { display: block; }
+                    }
+                    @media (min-width: 901px) {
+                        .filter-sidebar { display: block !important; }
+                    }
+                `}</style>
+            </PembeliLayout>
         </>
     )
 }
 
-function paginationBtnStyle(disabled) {
-    return {
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 4,
-        padding: '8px 14px',
-        borderRadius: 8,
-        border: '1px solid #8C4B36',
-        background: '#F4F3EE',
-        fontFamily: '"Antic Didone", serif',
-        fontSize: 14,
-        color: disabled ? '#B0A090' : '#1F1A17',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.6 : 1,
-    }
+function FilterSidebar({
+    visible,
+    filterItems,
+    activeFilter,
+    selectedCategory,
+    categories,
+    onFilterClick,
+    onCategorySelect,
+    onClearCategory,
+}) {
+    return (
+        <aside className={`pembeli-card filter-sidebar${visible ? ' is-open' : ''}`} style={{ padding: 0, overflow: 'hidden' }}>
+            <div style={{
+                padding: '16px 20px',
+                borderBottom: '1px solid var(--border)',
+            }}>
+                <p className="pembeli-label" style={{ margin: 0 }}>Filter Produk</p>
+            </div>
+            {filterItems.map((item) => (
+                <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => onFilterClick(item.key)}
+                    style={{
+                        width: '100%',
+                        display: 'block',
+                        padding: '14px 20px',
+                        border: 'none',
+                        borderBottom: '1px solid var(--border)',
+                        background: activeFilter === item.key || (item.key === 'category' && selectedCategory)
+                            ? 'var(--cream)'
+                            : 'transparent',
+                        fontFamily: 'var(--font-body)',
+                        fontSize: 13,
+                        color: activeFilter === item.key ? 'var(--primary)' : 'var(--ink)',
+                        fontWeight: activeFilter === item.key ? 600 : 400,
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                    }}
+                >
+                    {item.label}
+                </button>
+            ))}
+            {activeFilter === 'category' && (
+                <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <CategoryChip active={!selectedCategory} onClick={onClearCategory}>Semua</CategoryChip>
+                    {categories.map((cat) => (
+                        <CategoryChip key={cat} active={selectedCategory === cat} onClick={() => onCategorySelect(cat)}>
+                            {cat}
+                        </CategoryChip>
+                    ))}
+                </div>
+            )}
+        </aside>
+    )
+}
+
+function CategoryChip({ children, active, onClick }) {
+    return (
+        <button
+            type="button"
+            onClick={onClick}
+            style={{
+                padding: '8px 12px',
+                borderRadius: 2,
+                border: `1px solid ${active ? 'var(--primary)' : 'var(--border)'}`,
+                background: active ? 'var(--primary)' : 'var(--card)',
+                color: active ? 'var(--cream)' : 'var(--ink)',
+                fontSize: 12,
+                fontFamily: 'var(--font-body)',
+                cursor: 'pointer',
+                textAlign: 'left',
+            }}
+        >
+            {children}
+        </button>
+    )
+}
+
+function PaginationBtn({ children, disabled, active, onClick }) {
+    return (
+        <button
+            type="button"
+            disabled={disabled}
+            onClick={onClick}
+            className="pembeli-btn"
+            style={{
+                border: `1px solid ${active ? 'var(--primary)' : 'var(--border)'}`,
+                background: active ? 'var(--cream)' : 'var(--card)',
+                color: active ? 'var(--primary)' : disabled ? 'var(--muted)' : 'var(--ink)',
+                opacity: disabled ? 0.5 : 1,
+                cursor: disabled ? 'not-allowed' : 'pointer',
+                fontSize: 13,
+                padding: '8px 14px',
+                borderRadius: 2,
+                fontFamily: 'var(--font-body)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+            }}
+        >
+            {children}
+        </button>
+    )
 }

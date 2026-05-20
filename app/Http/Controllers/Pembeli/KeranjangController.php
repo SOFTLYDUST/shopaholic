@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pembeli;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Pembeli\Concerns\ResolvesCart;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +13,8 @@ use Inertia\Response;
 
 class KeranjangController extends Controller
 {
+    use ResolvesCart;
+
     public function index(Request $request): Response
     {
         $items = $this->cartItemsFor($request);
@@ -61,37 +64,5 @@ class KeranjangController extends Controller
     private function authorizeCartItem(Request $request, CartItem $cartItem): void
     {
         abort_unless($cartItem->user_id === $request->user()->id, 403);
-    }
-
-    /** @return array{items: array<int, array<string, mixed>>, subtotal: int} */
-    private function cartItemsFor(Request $request): array
-    {
-        $rows = CartItem::query()
-            ->with('product')
-            ->where('user_id', $request->user()->id)
-            ->latest()
-            ->get();
-
-        $subtotal = 0;
-        $items = $rows->map(function (CartItem $item) use (&$subtotal) {
-            $lineTotal = $item->product->price * $item->quantity;
-            $subtotal += $lineTotal;
-
-            return [
-                'id' => $item->id,
-                'quantity' => $item->quantity,
-                'product' => [
-                    'id' => $item->product->id,
-                    'name' => $item->product->name,
-                    'image' => $item->product->image,
-                    'price' => $item->product->price,
-                    'price_formatted' => $item->product->formattedPrice(),
-                    'line_total' => $lineTotal,
-                    'line_total_formatted' => Product::formatRupiah($lineTotal),
-                ],
-            ];
-        })->values()->all();
-
-        return ['items' => $items, 'subtotal' => $subtotal];
     }
 }

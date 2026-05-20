@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Pembeli\BelanjaController;
+use App\Http\Controllers\Pembeli\CheckoutController;
 use App\Http\Controllers\Pembeli\KeranjangController;
+use App\Http\Controllers\Pembeli\RuteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => inertia('Beranda'))->name('beranda');
@@ -19,10 +21,28 @@ Route::middleware('guest')->group(function () {
 Route::post('/keluar', [AuthController::class, 'logout'])->middleware('auth')->name('keluar');
 
 Route::middleware(['auth', 'role:pembeli'])->prefix('pembeli')->name('pembeli.')->group(function () {
+    Route::redirect('/', '/pembeli/belanja')->name('index');
     Route::get('/belanja', [BelanjaController::class, 'index'])->name('belanja');
+    Route::get('/rute', [RuteController::class, 'index'])->name('rute');
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
     Route::post('/keranjang', [KeranjangController::class, 'store'])->name('keranjang.store');
     Route::patch('/keranjang/{cartItem}', [KeranjangController::class, 'update'])->name('keranjang.update');
     Route::delete('/keranjang/{cartItem}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
-    Route::get('/akun', fn () => inertia('pembeli/Akun'))->name('akun');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/checkout/sukses/{order}', [CheckoutController::class, 'success'])->name('checkout.sukses');
+    Route::get('/akun', function (\Illuminate\Http\Request $request) {
+        $user = $request->user();
+
+        return inertia('pembeli/Akun', [
+            'profile' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'address' => $user->address,
+                'city' => $user->city,
+                'postal_code' => $user->postal_code,
+            ],
+        ]);
+    })->name('akun');
 });

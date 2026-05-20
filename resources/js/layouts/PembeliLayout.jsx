@@ -1,0 +1,187 @@
+import { Link, router, usePage } from '@inertiajs/react'
+import { LogOut, ShoppingCart } from 'lucide-react'
+import { themeCss } from '../theme/shopaholicTheme'
+
+const logoPath = '/img/Logo%20Shopaholic%203.png'
+
+const navItems = [
+    { label: 'Belanja', href: '/pembeli/belanja' },
+    { label: 'Rute Jastip', href: '/pembeli/rute' },
+    { label: 'Keranjang', href: '/pembeli/keranjang' },
+    { label: 'Akun', href: '/pembeli/akun' },
+]
+
+export default function PembeliLayout({
+    children,
+    title,
+    label = 'AREA PEMBELI',
+    description,
+    headerAction,
+}) {
+    const page = usePage()
+    const { cart, auth } = page.props
+    const currentUrl = typeof page.url === 'string' ? page.url : ''
+    const cartCount = cart?.count ?? 0
+
+    const isActive = (href) => {
+        if (!href || !currentUrl) return false
+        return currentUrl === href || currentUrl.startsWith(`${href}/`)
+    }
+
+    const handleLogout = () => router.post('/keluar')
+
+    return (
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg)', color: 'var(--ink)' }}>
+            <style>{themeCss}</style>
+
+            <nav style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 30,
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                background: 'rgba(254, 251, 246, 0.92)',
+                borderBottom: '1px solid var(--border)',
+            }}>
+                <div className="pembeli-container" style={{
+                    height: 74,
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto 1fr',
+                    alignItems: 'center',
+                    gap: 16,
+                }}>
+                    <Link href="/pembeli/belanja" style={{ textDecoration: 'none', justifySelf: 'start', display: 'inline-flex', alignItems: 'center' }}>
+                        <img src={logoPath} alt="Shopaholic" style={{ height: 88, width: 'auto', display: 'block', transform: 'translateY(-8px)' }} />
+                    </Link>
+
+                    <div className="pembeli-nav-center" style={{ display: 'flex', gap: 24, alignItems: 'center', justifySelf: 'center' }}>
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="pembeli-nav-link"
+                                style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    textDecoration: 'none',
+                                    fontSize: 13,
+                                    color: isActive(item.href) ? 'var(--ink)' : 'var(--muted)',
+                                    borderBottom: isActive(item.href) ? '1px solid var(--primary)' : '1px solid transparent',
+                                    paddingBottom: 6,
+                                }}
+                            >
+                                {item.label}
+                                {item.href === '/pembeli/keranjang' && cartCount > 0 && (
+                                    <span style={{
+                                        background: 'var(--primary)',
+                                        color: 'var(--cream)',
+                                        fontSize: 10,
+                                        fontWeight: 700,
+                                        minWidth: 18,
+                                        height: 18,
+                                        borderRadius: 9,
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '0 5px',
+                                        fontFamily: 'var(--font-body)',
+                                    }}>
+                                        {cartCount}
+                                    </span>
+                                )}
+                            </Link>
+                        ))}
+                    </div>
+
+                    <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: 12, color: 'var(--muted)', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {auth?.user?.name}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={handleLogout}
+                            className="pembeli-btn pembeli-btn-outline"
+                            style={{ padding: '8px 12px' }}
+                            aria-label="Keluar"
+                        >
+                            <LogOut size={16} />
+                            Keluar
+                        </button>
+                    </div>
+                </div>
+
+                <div className="pembeli-nav-mobile" style={{
+                    display: 'none',
+                    justifyContent: 'center',
+                    gap: 8,
+                    padding: '0 16px 12px',
+                    flexWrap: 'wrap',
+                }}>
+                    {navItems.map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`pembeli-btn pembeli-btn-ghost${isActive(item.href) ? '' : ''}`}
+                            style={{
+                                borderColor: isActive(item.href) ? 'var(--primary)' : 'var(--border)',
+                                color: isActive(item.href) ? 'var(--primary)' : 'var(--muted)',
+                                fontSize: 12,
+                                padding: '8px 12px',
+                            }}
+                        >
+                            {item.label}
+                            {item.href === '/pembeli/keranjang' && cartCount > 0 ? ` (${cartCount})` : ''}
+                        </Link>
+                    ))}
+                </div>
+            </nav>
+
+            {(title || description) && (
+                <header style={{
+                    borderBottom: '1px solid var(--border)',
+                    background: 'var(--bg)',
+                    padding: '40px 0 32px',
+                }}>
+                    <div className="pembeli-container">
+                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
+                            <div>
+                                {label && <p className="pembeli-label">{label}</p>}
+                                {title && (
+                                    <h1 style={{
+                                        margin: label ? '10px 0 0' : 0,
+                                        fontFamily: 'var(--font-heading)',
+                                        fontSize: 'clamp(28px, 5vw, 38px)',
+                                        fontWeight: 600,
+                                        lineHeight: 1.15,
+                                    }}>
+                                        {title}
+                                    </h1>
+                                )}
+                                {description && (
+                                    <p style={{ margin: '12px 0 0', color: 'var(--muted)', fontSize: 14, lineHeight: 1.7, maxWidth: 560 }}>
+                                        {description}
+                                    </p>
+                                )}
+                            </div>
+                            {headerAction}
+                        </div>
+                    </div>
+                </header>
+            )}
+
+            <main style={{ padding: '32px 0 56px', flex: 1 }}>
+                <div className="pembeli-container">
+                    {children}
+                </div>
+            </main>
+
+            <footer style={{ borderTop: '1px solid var(--border)', padding: '20px 0', background: 'var(--bg)' }}>
+                <div className="pembeli-container" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12, fontSize: 12, color: 'var(--muted)' }}>
+                    <span>© 2026 Shopaholic — Jasa Titip Terpercaya</span>
+                    <Link href="/" style={{ color: 'var(--primary)', textDecoration: 'none' }}>Kembali ke Beranda</Link>
+                </div>
+            </footer>
+        </div>
+    )
+}
