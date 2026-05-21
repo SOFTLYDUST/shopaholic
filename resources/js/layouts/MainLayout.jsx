@@ -148,7 +148,7 @@ export default function MainLayout({ children }) {
                     <div className="nav-actions" style={{ justifySelf: 'end', display: 'flex', gap: 10, flexShrink: 0 }}>
                         {user ? (
                             <Link
-                                href={user.role === 'pembeli' ? '/pembeli/belanja' : '/'}
+                                href={user.role === 'pembeli' ? '/pembeli/belanja' : '/penjual'}
                                 className="btn btn-primary"
                             >
                                 {user.role === 'pembeli' ? 'Ke Belanja' : 'Dashboard'}

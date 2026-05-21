@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Pembeli\Concerns\ResolvesCart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderTrackingEvent;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -75,8 +76,11 @@ class CheckoutController extends Controller
                 'postal_code' => $validated['postal_code'],
             ]);
 
+            $firstProduct = Product::query()->find($cart['items'][0]['product']['id'] ?? null);
+
             $order = Order::create([
                 'user_id' => $user->id,
+                'order_number' => Order::generateOrderNumber(),
                 'payment_method' => $validated['payment_method'],
                 'recipient_name' => $validated['name'],
                 'address' => $validated['address'],
@@ -86,6 +90,20 @@ class CheckoutController extends Controller
                 'shipping_cost' => $shipping,
                 'total' => $total,
                 'status' => 'paid',
+                'tracking_status' => 'pesanan_diterima',
+                'service_name' => 'Jasa Titip Luar Negeri',
+                'destination_country' => 'Indonesia',
+                'source_country' => $firstProduct?->shipping_from,
+                'last_tracking_at' => now(),
+            ]);
+
+            OrderTrackingEvent::create([
+                'order_id' => $order->id,
+                'status' => 'pesanan_diterima',
+                'title' => 'Pesanan diterima dan dikonfirmasi',
+                'location' => 'Shopaholic',
+                'description' => 'Pembayaran terverifikasi, pesanan masuk antrian',
+                'occurred_at' => now(),
             ]);
 
             foreach ($cart['items'] as $item) {
@@ -116,6 +134,7 @@ class CheckoutController extends Controller
         return Inertia::render('pembeli/HalamanPembayaranSukses', [
             'order' => [
                 'id' => $order->id,
+                'order_number' => $order->order_number,
                 'total_formatted' => Product::formatRupiah($order->total),
                 'payment_method' => $order->payment_method === 'transfer_bank' ? 'Transfer Bank' : 'E-wallet',
                 'items' => $order->items->map(fn (OrderItem $item) => [

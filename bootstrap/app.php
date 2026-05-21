@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             return match ($role) {
                 'pembeli' => route('pembeli.belanja'),
+                'penjual' => route('penjual.dashboard'),
                 default => route('beranda'),
             };
         });

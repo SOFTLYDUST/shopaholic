@@ -7,6 +7,7 @@ const logoPath = '/img/Logo%20Shopaholic%203.png'
 const navItems = [
     { label: 'Belanja', href: '/pembeli/belanja' },
     { label: 'Rute Jastip', href: '/pembeli/rute' },
+    { label: 'Tracking', href: '/pembeli/tracking' },
     { label: 'Keranjang', href: '/pembeli/keranjang' },
     { label: 'Akun', href: '/pembeli/akun' },
 ]

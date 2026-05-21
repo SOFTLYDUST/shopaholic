@@ -5,6 +5,11 @@ use App\Http\Controllers\Pembeli\BelanjaController;
 use App\Http\Controllers\Pembeli\CheckoutController;
 use App\Http\Controllers\Pembeli\KeranjangController;
 use App\Http\Controllers\Pembeli\RuteController;
+use App\Http\Controllers\Pembeli\TrackingController;
+use App\Http\Controllers\Penjual\DashboardController;
+use App\Http\Controllers\Penjual\PengaturanController;
+use App\Http\Controllers\Penjual\PesananController;
+use App\Http\Controllers\Penjual\ProdukController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => inertia('Beranda'))->name('beranda');
@@ -24,6 +29,7 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('pembeli')->name('pembeli.')
     Route::redirect('/', '/pembeli/belanja')->name('index');
     Route::get('/belanja', [BelanjaController::class, 'index'])->name('belanja');
     Route::get('/rute', [RuteController::class, 'index'])->name('rute');
+    Route::get('/tracking', [TrackingController::class, 'index'])->name('tracking');
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang');
     Route::post('/keranjang', [KeranjangController::class, 'store'])->name('keranjang.store');
     Route::patch('/keranjang/{cartItem}', [KeranjangController::class, 'update'])->name('keranjang.update');
@@ -45,4 +51,12 @@ Route::middleware(['auth', 'role:pembeli'])->prefix('pembeli')->name('pembeli.')
             ],
         ]);
     })->name('akun');
+});
+
+Route::middleware(['auth', 'role:penjual'])->prefix('penjual')->name('penjual.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/pesanan', [PesananController::class, 'index'])->name('pesanan');
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk');
+    Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
+    Route::patch('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
 });

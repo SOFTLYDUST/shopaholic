@@ -31,7 +31,7 @@ export default function HalamanPembayaranSukses({ order }) {
                             Pembayaran Sukses
                         </h2>
                         <p style={{ margin: 0, fontSize: 14, color: 'var(--muted)', lineHeight: 1.7 }}>
-                            Pesanan #{order.id} telah kami terima. Proses pembelian produk dari luar negeri akan segera dimulai.
+                            Pesanan <strong>{order.order_number}</strong> telah kami terima. Proses pembelian produk dari luar negeri akan segera dimulai.
                         </p>
                     </div>
 
@@ -76,11 +76,19 @@ export default function HalamanPembayaranSukses({ order }) {
                     </PembeliCard>
 
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-                        <Link href="/pembeli/belanja" className="pembeli-btn pembeli-btn-primary">
+                        {order.order_number && (
+                            <Link
+                                href={`/pembeli/tracking?nomor=${encodeURIComponent(order.order_number)}`}
+                                className="pembeli-btn pembeli-btn-primary"
+                            >
+                                Lacak Pesanan
+                            </Link>
+                        )}
+                        <Link href="/pembeli/belanja" className="pembeli-btn pembeli-btn-outline">
                             <ShoppingBag size={16} />
                             Belanja Lagi
                         </Link>
-                        <Link href="/" className="pembeli-btn pembeli-btn-outline">
+                        <Link href="/" className="pembeli-btn pembeli-btn-ghost">
                             Ke Beranda
                         </Link>
                     </div>

@@ -101,6 +101,7 @@ class AuthController extends Controller
     {
         return match ($user->role) {
             'pembeli' => 'pembeli.belanja',
+            'penjual' => 'penjual.dashboard',
             default => 'beranda',
         };
     }

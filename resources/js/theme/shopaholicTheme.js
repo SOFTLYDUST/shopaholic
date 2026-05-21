@@ -126,3 +126,97 @@ export const themeCss = `
         .pembeli-nav-mobile { display: flex !important; }
     }
 `
+
+export const penjualLayoutCss = `
+    .penjual-shell {
+        display: flex;
+        min-height: 100vh;
+        background: var(--bg);
+    }
+    .penjual-sidebar {
+        width: 240px;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, var(--cream) 0%, #F0EBE3 50%, #E8F0F4 100%);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+    }
+    .penjual-sidebar-nav {
+        flex: 1;
+        padding: 8px 0;
+    }
+    .penjual-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 20px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid rgba(216, 207, 194, 0.5);
+        transition: all 0.2s ease;
+        font-family: var(--font-body);
+    }
+    .penjual-nav-item:hover {
+        color: var(--primary);
+        background: rgba(192, 90, 37, 0.06);
+    }
+    .penjual-nav-item.is-active {
+        color: var(--primary);
+        background: rgba(192, 90, 37, 0.12);
+        border-left: 3px solid var(--primary);
+    }
+    .penjual-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+    .penjual-topbar {
+        height: 64px;
+        background: var(--primary);
+        color: var(--cream);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        flex-shrink: 0;
+    }
+    .penjual-content {
+        flex: 1;
+        padding: 28px 24px 40px;
+        overflow: auto;
+    }
+    .penjual-stat-card {
+        background: linear-gradient(135deg, rgba(245, 239, 228, 0.95) 0%, rgba(252, 238, 230, 0.9) 100%);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: var(--shadow-soft);
+    }
+    @media (max-width: 900px) {
+        .penjual-shell { flex-direction: column; }
+        .penjual-sidebar {
+            width: 100%;
+            flex-direction: row;
+            overflow-x: auto;
+        }
+        .penjual-sidebar-nav {
+            display: flex;
+            flex: 1;
+            padding: 0;
+        }
+        .penjual-nav-item {
+            border-bottom: none;
+            border-right: 1px solid rgba(216, 207, 194, 0.5);
+            white-space: nowrap;
+            padding: 12px 16px;
+        }
+    }
+`
