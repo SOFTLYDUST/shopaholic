@@ -12,7 +12,6 @@ class BelanjaController extends Controller
     public function index(): Response
     {
         $products = Product::query()
-            ->where('is_active', true)
             ->orderBy('name')
             ->get()
             ->map(fn (Product $product) => [
@@ -21,16 +20,11 @@ class BelanjaController extends Controller
                 'slug' => $product->slug,
                 'price' => $product->price,
                 'price_formatted' => $product->formattedPrice(),
-                'category' => $product->category,
                 'image' => $product->image,
                 'shipping_from' => $product->shipping_from,
             ]);
 
-        $categories = Product::query()
-            ->where('is_active', true)
-            ->distinct()
-            ->orderBy('category')
-            ->pluck('category');
+        $categories = collect([]);
 
         return Inertia::render('pembeli/HalamanBelanja', [
             'products' => $products->values()->all(),

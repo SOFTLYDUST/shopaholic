@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function index(Request $request): Response
     {
         $totalOrders = Order::query()->count();
-        $activeProducts = Product::query()->where('is_active', true)->count();
+        $activeProducts = Product::query()->count();
         $totalRevenue = (int) Order::query()->sum('total');
         $totalCustomers = User::query()->where('role', 'pembeli')->count();
 
