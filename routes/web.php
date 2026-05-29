@@ -60,3 +60,6 @@ Route::middleware(['auth', 'role:penjual'])->prefix('penjual')->name('penjual.')
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
     Route::patch('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
 });
+use App\Http\Controllers\ProductController;
+
+Route::get('/api/products', [ProductController::class, 'index']);
