@@ -31,7 +31,7 @@ export default function PenjualLayout({ children, pageTitle = 'Dashboard Penjual
             <aside className="penjual-sidebar">
                 <div style={{ padding: '20px 16px 12px', borderBottom: '1px solid var(--border)' }}>
                     <Link href="/penjual" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-                        <img src={logoPath} alt="Shopaholic" style={{ height: 48, width: 'auto' }} />
+                        <img src={logoPath} alt="Shopaholic" style={{ height: 86, width: 'auto' }} />
                     </Link>
                 </div>
                 <nav className="penjual-sidebar-nav">
@@ -58,7 +58,7 @@ export default function PenjualLayout({ children, pageTitle = 'Dashboard Penjual
                         <img
                             src={logoPath}
                             alt=""
-                            style={{ height: 36, width: 'auto', display: 'none' }}
+                            style={{ height: 100, width: 'auto', display: 'none' }}
                             className="penjual-topbar-logo"
                         />
                         <span style={{

@@ -186,6 +186,12 @@ export const penjualLayoutCss = `
 
     border-right:1px solid #F0DCE7;
 }
+    .penjual-main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
 
 .penjual-nav-item{
     display:flex;
@@ -215,6 +221,7 @@ export const penjualLayoutCss = `
 }
 
 .penjual-topbar{
+    width:100%;
     height:70px;
 
     background:linear-gradient(
@@ -230,6 +237,8 @@ export const penjualLayoutCss = `
     justify-content:space-between;
 
     padding:0 24px;
+
+    box-sizing:border-box;
 }
 
 .penjual-content{

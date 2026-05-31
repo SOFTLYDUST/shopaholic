@@ -177,7 +177,7 @@ export default function HalamanRute({
                                     <Link
                                         href="/pembeli/belanja"
                                         className="pembeli-btn pembeli-btn-primary"
-                                        style={{ marginTop: 12, width: '100%' }}
+                                        style={{ marginTop: 10, width: '90%' }}
                                     >
                                         Mulai Titip Sekarang
                                     </Link>

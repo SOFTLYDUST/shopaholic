@@ -9,7 +9,7 @@ const navItems = [
     { label: 'Rute Jastip', href: '/pembeli/rute' },
     { label: 'Tracking', href: '/pembeli/tracking' },
     { label: 'Keranjang', href: '/pembeli/keranjang' },
-    { label: 'Testimoni', href: '/testimoni' },
+    { label: 'Testimoni', href: '/pembeli/testimoni' },
     { label: 'Akun', href: '/pembeli/akun' },
 ]
 export default function PembeliLayout({

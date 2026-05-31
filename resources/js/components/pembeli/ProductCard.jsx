@@ -1,6 +1,8 @@
 import { MapPin } from 'lucide-react'
 
 export default function ProductCard({ product, onAddToCart }) {
+    console.log(product)
+
     return (
         <article
             className="pembeli-card"
@@ -34,6 +36,7 @@ export default function ProductCard({ product, onAddToCart }) {
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 />
             </div>
+
             <div style={{ padding: '16px 18px 18px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <span style={{
                     fontSize: 10,
@@ -44,6 +47,7 @@ export default function ProductCard({ product, onAddToCart }) {
                 }}>
                     {product.category}
                 </span>
+
                 <h3 style={{
                     margin: '6px 0 4px',
                     fontFamily: 'var(--font-heading)',
@@ -54,6 +58,7 @@ export default function ProductCard({ product, onAddToCart }) {
                 }}>
                     {product.name}
                 </h3>
+
                 <p style={{
                     margin: '0 0 8px',
                     display: 'flex',
@@ -63,8 +68,9 @@ export default function ProductCard({ product, onAddToCart }) {
                     color: 'var(--muted)',
                 }}>
                     <MapPin size={12} />
-                    Dikirim dari {product.shipping_from}
+                    Dikirim dari {product.origin_city}
                 </p>
+
                 <p style={{
                     margin: '0 0 14px',
                     fontFamily: 'var(--font-heading)',
@@ -73,6 +79,7 @@ export default function ProductCard({ product, onAddToCart }) {
                 }}>
                     {product.price_formatted}
                 </p>
+
                 <button
                     type="button"
                     onClick={() => onAddToCart(product.id)}

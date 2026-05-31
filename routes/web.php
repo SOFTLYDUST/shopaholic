@@ -17,6 +17,8 @@ use App\Http\Controllers\Penjual\ProdukController;
 
 use App\Http\Controllers\ProductController;
 
+use App\Http\Controllers\Pembeli\TestimoniController;
+
 /*
 |--------------------------------------------------------------------------
 | HALAMAN PUBLIK
@@ -121,3 +123,5 @@ Route::middleware(['auth', 'role:penjual'])
 */
 
 Route::get('/api/products', [ProductController::class, 'index']);
+
+Route::get('/pembeli/testimoni', [TestimoniController::class, 'index']);
