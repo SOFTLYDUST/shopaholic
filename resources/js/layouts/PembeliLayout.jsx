@@ -1,17 +1,17 @@
 import { Link, router, usePage } from '@inertiajs/react'
-import { LogOut, ShoppingCart } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { themeCss } from '../theme/shopaholicTheme'
 
-const logoPath = '/img/Logo%20Shopaholic%203.png'
 
+const logoPath = '/img/Logo%20Shopaholic%203.png'
 const navItems = [
     { label: 'Belanja', href: '/pembeli/belanja' },
     { label: 'Rute Jastip', href: '/pembeli/rute' },
     { label: 'Tracking', href: '/pembeli/tracking' },
     { label: 'Keranjang', href: '/pembeli/keranjang' },
+    { label: 'Testimoni', href: '/testimoni' },
     { label: 'Akun', href: '/pembeli/akun' },
 ]
-
 export default function PembeliLayout({
     children,
     title,
@@ -36,14 +36,14 @@ export default function PembeliLayout({
             <style>{themeCss}</style>
 
             <nav style={{
-                position: 'sticky',
-                top: 0,
-                zIndex: 30,
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-                background: 'rgba(254, 251, 246, 0.92)',
-                borderBottom: '1px solid var(--border)',
-            }}>
+    position: 'sticky',
+    top: 0,
+    zIndex: 30,
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    background: 'linear-gradient(90deg,#FFF4F8,#FFF8FB,#FFFDFE)',
+    borderBottom: '1px solid var(--border)',
+}}>
                 <div className="pembeli-container" style={{
                     height: 74,
                     display: 'grid',
@@ -140,10 +140,10 @@ export default function PembeliLayout({
 
             {(title || description) && (
                 <header style={{
-                    borderBottom: '1px solid var(--border)',
-                    background: 'var(--bg)',
-                    padding: '40px 0 32px',
-                }}>
+    borderBottom: '1px solid var(--border)',
+    background: 'linear-gradient(135deg,#FFF4F8,#FFFBEF,#F7F2FF)',
+    padding: '60px 0 50px',
+}}>
                     <div className="pembeli-container">
                         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
                             <div>

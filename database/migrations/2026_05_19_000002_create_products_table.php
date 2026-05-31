@@ -7,17 +7,24 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-{
-    Schema::create('products', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('description');
-        $table->integer('price');
-        $table->string('image')->nullable();
-        $table->integer('stock')->default(0);
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug')->unique();
+
+            $table->string('category')->nullable();
+            $table->integer('price');
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
+            $table->string('shipping_from')->nullable();
+
+            $table->integer('stock')->default(0);
+            $table->boolean('is_active')->default(true);
+
+            $table->timestamps();
+        });
+    }
 
     public function down(): void
     {
