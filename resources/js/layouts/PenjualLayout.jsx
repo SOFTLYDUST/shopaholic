@@ -28,21 +28,68 @@ export default function PenjualLayout({ children, pageTitle = 'Dashboard Penjual
         <div className="penjual-shell" style={{ color: 'var(--ink)' }}>
             <style>{themeCss}{penjualLayoutCss}</style>
 
-            <aside className="penjual-sidebar">
-                <div style={{ padding: '20px 16px 12px', borderBottom: '1px solid var(--border)' }}>
-                    <Link href="/penjual" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-                        <img src={logoPath} alt="Shopaholic" style={{ height: 86, width: 'auto' }} />
+            <aside
+                className="penjual-sidebar"
+                style={{
+                    background: 'linear-gradient(180deg,#6E1418,#7D1B20,#8A2328)',
+                    borderRight: '1px solid rgba(255,255,255,0.08)',
+                }}
+            >
+                <div
+                    style={{
+                        height: 74,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderBottom: '1px solid rgba(255,255,255,0.12)',
+                        background: 'linear-gradient(180deg,#6E1418,#7D1B20,#8A2328)',
+                    }}
+                >
+                    <Link
+                        href="/penjual"
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            textDecoration: 'none',
+                        }}
+                    >
+                        <img
+                            src={logoPath}
+                            alt="Shopaholic"
+                            style={{
+                                height: 88,
+                                width: 'auto',
+                                objectFit: 'contain',
+                            }}
+                        />
                     </Link>
                 </div>
+
                 <nav className="penjual-sidebar-nav">
                     {navItems.map((item) => {
                         const Icon = item.icon
                         const active = isActive(item.href, item.exact)
+
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 className={`penjual-nav-item${active ? ' is-active' : ''}`}
+                                style={{
+                                    color: active ? '#5C3B2E' : '#FFFFFF',
+                                    margin: '6px 12px',
+                                    borderRadius: 14,
+                                    padding: '14px 18px',
+                                    transition: '0.25s ease',
+                                    background: active
+                                        ? 'linear-gradient(135deg,#D6ECFF,#FDF6EC,#E8F4FF)'
+                                        : 'linear-gradient(135deg,rgba(214,236,255,0.12),rgba(253,246,236,0.06))',
+                                    borderLeft: active
+                                        ? '3px solid #A9D6FF'
+                                        : '3px solid transparent',
+                                    backdropFilter: active ? 'blur(6px)' : 'none',
+                                }}
                             >
                                 <Icon size={20} strokeWidth={active ? 2.25 : 1.75} />
                                 {item.label}
@@ -53,37 +100,56 @@ export default function PenjualLayout({ children, pageTitle = 'Dashboard Penjual
             </aside>
 
             <div className="penjual-main">
-                <header className="penjual-topbar">
+                <header
+                    className="penjual-topbar"
+                    style={{
+                        background: 'linear-gradient(90deg,#6E1418,#7D1B20,#8A2328)',
+                        color: '#FFFFFF',
+                        borderBottom: '1px solid rgba(255,255,255,0.12)',
+                        height: 74,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0 28px',
+                    }}
+                >
                     <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <img
-                            src={logoPath}
-                            alt=""
-                            style={{ height: 100, width: 'auto', display: 'none' }}
-                            className="penjual-topbar-logo"
-                        />
-                        <span style={{
-                            fontFamily: 'var(--font-heading)',
-                            fontSize: 20,
-                            fontWeight: 600,
-                            letterSpacing: 0.3,
-                        }}>
+                        <span
+                            style={{
+                                fontFamily: 'var(--font-heading)',
+                                fontSize: 20,
+                                fontWeight: 600,
+                                letterSpacing: 0.3,
+                            }}
+                        >
                             {pageTitle}
                         </span>
                     </div>
+
                     <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                        <span style={{ fontSize: 13, opacity: 0.9, maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <span
+                            style={{
+                                fontSize: 13,
+                                opacity: 0.9,
+                                maxWidth: 160,
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
                             {auth?.user?.name}
                         </span>
+
                         <button
                             type="button"
                             onClick={handleLogout}
                             aria-label="Keluar"
                             style={{
-                                background: 'rgba(255,255,255,0.15)',
-                                border: '1px solid rgba(255,255,255,0.35)',
-                                borderRadius: 4,
-                                padding: '8px 12px',
-                                color: 'inherit',
+                                background: 'rgba(255,255,255,0.10)',
+                                border: '1px solid rgba(255,255,255,0.18)',
+                                borderRadius: 10,
+                                padding: '8px 14px',
+                                color: '#FFFFFF',
                                 cursor: 'pointer',
                                 display: 'inline-flex',
                                 alignItems: 'center',
