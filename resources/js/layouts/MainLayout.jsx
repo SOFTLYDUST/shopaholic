@@ -80,21 +80,22 @@ export default function MainLayout({ children }) {
                     color: var(--primary);
                 }
                 .btn-primary {
-                    background: var(--primary);
-                    border-color: var(--primary);
-                    color: var(--cream);
-                }
-                .btn-primary:hover {
-                    background: #a84e21;
-                    border-color: #a84e21;
-                }
+    background: #6D071A;
+    border-color: #6D071A;
+    color: #F5EFE4;
+}
+
+.btn-primary:hover {
+    background: #550515;
+    border-color: #550515;
+}
                 .footer-grid {
                     display: grid;
                     gap: 24px;
                     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
                 }
                 .nav-logo img {
-                    height: 56px;
+                    height: 105px;
                     width: auto;
                     display: block;
                 }
@@ -165,39 +166,106 @@ export default function MainLayout({ children }) {
 
             <main>{children}</main>
 
-            <footer style={{ background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-                <div className="container" style={{ paddingTop: 56, paddingBottom: 34 }}>
-                    <div className="footer-grid">
-                        <div>
-                            <img src={logoPath} alt="Shopaholic" style={{ height: 150, width: 'auto', display: 'block', marginBottom: 12, transform: 'translateY(-15px)' }} />
-                            <p style={{ margin: 0, color: 'var(--muted)', fontSize: 13, lineHeight: 1.8, maxWidth: 370 }}>
-                                Solusi belanja produk luar negeri yang mudah, aman, dan terpercaya untuk seluruh Indonesia.
-                            </p>
-                        </div>
+            <footer
+    style={{
+        background: '#6D071A',
+        borderTop: '1px solid rgba(255,255,255,0.15)',
+    }}
+>
+    <div className="container" style={{ paddingTop: 56, paddingBottom: 34 }}>
+        <div className="footer-grid">
+            <div>
+                <img
+                    src={logoPath}
+                    alt="Shopaholic"
+                    style={{
+                        height: 150,
+                        width: 'auto',
+                        display: 'block',
+                        marginBottom: 12,
+                        transform: 'translateY(-15px)',
+                    }}
+                />
 
-                        <div>
-                            <p style={{ margin: '0 0 14px 0', color: 'var(--ink)', fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase' }}>Tentang Kami</p>
-                            <div style={{ display: 'grid', gap: 10 }}>
-                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Tentang Shopaholic</Link>
-                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Visi &amp; Misi Shopaholic</Link>
-                                <Link href="/tentang-kami" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Filosofi</Link>
-                            </div>
-                        </div>
+                <p
+                    style={{
+                        margin: 0,
+                        color: '#F3E6E8',
+                        fontSize: 13,
+                        lineHeight: 1.8,
+                        maxWidth: 370,
+                    }}
+                >
+                    Solusi belanja produk luar negeri yang mudah, aman, dan terpercaya untuk seluruh Indonesia.
+                </p>
+            </div>
 
-                        <div>
-                            <p style={{ margin: '0 0 14px 0', color: 'var(--ink)', fontSize: 12, letterSpacing: 1.2, textTransform: 'uppercase' }}>Quick Links</p>
-                            <div style={{ display: 'grid', gap: 10 }}>
-                                <Link href="/" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Mulai Titip</Link>
-                                <Link href="/kontak" style={{ textDecoration: 'none', color: 'var(--muted)', fontSize: 13, transition: 'color 0.2s ease' }}>Hubungi Kami</Link>
-                            </div>
-                        </div>
-                    </div>
+            <div>
+                <p
+                    style={{
+                        margin: '0 0 14px 0',
+                        color: '#FFFFFF',
+                        fontSize: 12,
+                        letterSpacing: 1.2,
+                        textTransform: 'uppercase',
+                    }}
+                >
+                    Tentang Kami
+                </p>
 
-                    <div style={{ borderTop: '1px solid var(--border)', marginTop: 34, paddingTop: 18, color: 'var(--muted)', fontSize: 12 }}>
-                        © 2026 Shopaholic. All rights reserved.
-                    </div>
+                <div style={{ display: 'grid', gap: 10 }}>
+                    <Link href="/tentang-kami" style={{ textDecoration: 'none', color: '#F3E6E8', fontSize: 13 }}>
+                        Tentang Shopaholic
+                    </Link>
+
+                    <Link href="/tentang-kami" style={{ textDecoration: 'none', color: '#F3E6E8', fontSize: 13 }}>
+                        Visi &amp; Misi Shopaholic
+                    </Link>
+
+                    <Link href="/tentang-kami" style={{ textDecoration: 'none', color: '#F3E6E8', fontSize: 13 }}>
+                        Filosofi
+                    </Link>
                 </div>
-            </footer>
+            </div>
+
+            <div>
+                <p
+                    style={{
+                        margin: '0 0 14px 0',
+                        color: '#FFFFFF',
+                        fontSize: 12,
+                        letterSpacing: 1.2,
+                        textTransform: 'uppercase',
+                    }}
+                >
+                    Quick Links
+                </p>
+
+                <div style={{ display: 'grid', gap: 10 }}>
+                    <Link href="/" style={{ textDecoration: 'none', color: '#F3E6E8', fontSize: 13 }}>
+                        Mulai Titip
+                    </Link>
+
+                    <Link href="/kontak" style={{ textDecoration: 'none', color: '#F3E6E8', fontSize: 13 }}>
+                        Hubungi Kami
+                    </Link>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style={{
+                borderTop: '1px solid rgba(255,255,255,0.15)',
+                marginTop: 34,
+                paddingTop: 18,
+                color: '#F3E6E8',
+                fontSize: 12,
+            }}
+        >
+            © 2026 Shopaholic. All rights reserved.
+        </div>
+    </div>
+</footer>
         </div>
     )
 }

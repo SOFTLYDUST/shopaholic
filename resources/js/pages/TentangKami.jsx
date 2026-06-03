@@ -53,14 +53,15 @@ export default function TentangKami() {
                     <div style={{ background: 'var(--card)', padding: 48, borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <div style={{ width: 360, height: 360, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <img
-                                src={logoPath}
-                                alt="Logo Shopaholic"
-                                style={{
-                                    width: '115%',
-                                    height: 'auto',
-                                    display: 'block',
-                                }}
-                            />
+    src={logoPath}
+    alt="Logo Shopaholic"
+    style={{
+        width: '100%',
+        maxWidth: '280px',
+        height: 'auto',
+        display: 'block',
+    }}
+/>
                         </div>
                     </div>
                 </div>
@@ -115,7 +116,7 @@ export default function TentangKami() {
                                     src={logoPath}
                                     alt="Logo Shopaholic"
                                     style={{
-                                        width: '500%',
+                                        width: '100%',
                                         height: 'auto',
                                         display: 'block',
                                     }}
